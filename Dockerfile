@@ -3,9 +3,10 @@ ARG OSM_FILE
 ENV OSM_FILE=$OSM_FILE
 ARG DOWNLOAD_URL
 ENV DOWNLOAD_URL=$DOWNLOAD_URL
+RUN echo $DOWNLOAD_URL
+RUN echo $OSM_FILE
 RUN mkdir -p data
 RUN if [ test -z $DOWNLOAD_URL ]; then COPY $OSM_FILE ./data; else apt-get update && apt install -y wget && wget $DOWNLOAD_URL -P ./data; fi;
-RUN echo "$OSM_FILE"
 RUN apt update
 RUN apt install -y build-essential git cmake pkg-config \
 libbz2-dev libstxxl-dev libstxxl1v5 libxml2-dev \
