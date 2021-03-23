@@ -1,6 +1,10 @@
 FROM ubuntu:16.04
 ARG OSM_FILE
 ENV OSM_FILE=$OSM_FILE
+ARG DOWNLOAD_URL
+ENV DOWNLOAD_URL=$DOWNLOAD_URL
+RUN mkdir -p data
+RUN if [ test -z $DOWNLOAD_URL ]; then COPY $OSM_FILE ./data; else apt-get update && apt install -y wget && wget $DOWNLOAD_URL -P ./data; fi;
 RUN echo "$OSM_FILE"
 RUN apt update
 RUN apt install -y build-essential git cmake pkg-config \
@@ -19,7 +23,7 @@ WORKDIR ../..
 RUN mkdir -p network
 WORKDIR ./network
 RUN mkdir -p data
-COPY pennsylvania-latest.osm.pbf ./data
+RUN cp -R ../data ./data
 WORKDIR data
 RUN osrm-extract -p ../../../osrm-backend-5.23.0/profiles/car.lua $OSM_FILE
 RUN osrm-partition $OSM_FILE
