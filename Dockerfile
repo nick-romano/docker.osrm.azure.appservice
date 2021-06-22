@@ -17,7 +17,7 @@ RUN tar -xzf v5.23.0.tar.gz
 WORKDIR ./osrm-backend-5.23.0
 RUN mkdir -p build
 WORKDIR ./build
-RUN cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_STXXL=ON
+RUN cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_BUILD_TYPE=Debug
 RUN cmake --build .
 RUN cmake --build . --target install
 WORKDIR ../..
